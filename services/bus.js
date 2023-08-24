@@ -10,10 +10,10 @@ const bussAdd = async function(req,res){
             plaka: req.body.plaka,
         };
         new database.CRUD('driverfollow','bus').insert(buss);
-        return res.json('added');
+        return res.status(200).json({Message: 'added'});
     }
     else{
-        return res.json('didn\'t  add');
+        return res.status(200).json({Message: 'didn\'t  add'});
     } 
 };
 
@@ -27,10 +27,10 @@ const bussUpdate = async function(req,res){
         {driverId : req.body.driverId},
         {$set : {'plaka' : req.body.plaka}});
     if(up.modifiedCount == 0 ){
-        return res.json('modified Count = 0');
+        return res.status(401).json({Message: 'modified Count = 0'});
     }
     else{
-        return res.json('update is right');
+        return res.status(200).json({Message: 'update is right'});
     }
 };
 const bussDelete = async function(req,res){
@@ -39,10 +39,10 @@ const bussDelete = async function(req,res){
     };
     var deleteCar = await  new database.CRUD('driverfollow','bus').delete(dele);
     if(deleteCar.result != 0){
-        return res.json('succesful');
+        return res.status(200).json({Message: 'succesful'});
     }
     else{
-        return res.json('failed');
+        return res.status(401).json({Message: 'failed'});
     }
 };
 

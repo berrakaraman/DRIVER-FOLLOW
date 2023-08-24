@@ -1,6 +1,7 @@
 // All Database functions are here
 //const express = require('express');
 const response =  require('../helpers/response');
+//const { driverId } = require('../middleware/driverIdControl');
 const database = require('../models/database');
 var jwt = require('jsonwebtoken');
 
@@ -54,16 +55,21 @@ const driversList =  async function(req,res){
     var fulldata = await  new database.CRUD('driverfollow','driver').find({ },[0,5]); //ilk parametre query ikinci parametre limit(databaseden kaç tane veri geleceğini gösteriyor)
     return res.json(fulldata);
 };
+const driverOne = async function(req,res){
+    let wantDriver = req.body.driverId;
+    var fulldata = await  new database.CRUD('driverfollow','driver').find({'driverId': wantDriver});
+    return res.json(fulldata);
+};
 const admin = async function(req,res){
     var updates = await  new database.CRUD('driverfollow','driver').update(
         {driverId: req.body.driverId},
         {$set: {'role': req.body.role}}
     );
     if(updates.modifiedCount == 0 ){
-        return res.json('modified Count = 0');
+        return res.status(401).json({Message: 'modified Count = 0'});
     }
     else{
-        return res.json('role update');
+        return res.status(200).json({Message:'role update'});
     }
 };
 const updatee = async function(req,res){
@@ -72,10 +78,10 @@ const updatee = async function(req,res){
         {$set: {'name': req.body.name}}
     );
     if(updates.modifiedCount == 0 ){
-        return res.json('modified Count = 0');
+        return res.status(401).json({Message: 'modified Count = 0'});
     }
     else{
-        return res.json('user update');
+        return res.status(200).json({Message:'user update'});
     }
 };
 const deletee = async function(req,res){
@@ -84,27 +90,19 @@ const deletee = async function(req,res){
     };
     var deletedriver = await  new database.CRUD('driverfollow','driver').delete(dele);
     if(deletedriver.result != 0){
-        return res.json('succesful');
+        return res.status(200).json({Message: 'succesful'});
     }
     else{
-        return res.json('failed');
+        return res.status(401).json({Message: 'failed'});
     }
 }; 
-
-
-
-
-
-
-
-
-
 
 module.exports ={
     register,
     login,
     driversList,
     admin,
+    driverOne,
     updatee,
     deletee
 };
