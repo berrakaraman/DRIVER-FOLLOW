@@ -210,6 +210,21 @@ const exchange = async function(req,res){
             console.error(error);
         });
 };*/
+
+const upload = async function(req,res){
+    const image = req.files;
+    const uploadPath = __dirname + '/'+ image.car.name;
+    //__dirname = bulunduğun klasör
+    image.car.mv(uploadPath, function (err) {
+        if (err) {
+            console.log(err);
+            return res.send('Failed !!');
+        }
+    });
+    if(image){
+        return res.json('ok');
+    }
+};
 module.exports ={
     workingStartTime,
     workingFinishTime,
@@ -217,5 +232,6 @@ module.exports ={
     workingMoney,
     breakTimeStart,
     breakTimeFinish,
-    exchange
+    exchange,
+    upload
 };

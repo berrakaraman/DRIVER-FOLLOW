@@ -15,6 +15,7 @@ router.post('/workingMoney',operationS.workingMoney);
 router.post('/breakTimeStart',control.driverId, bussId.bussId, operationS.breakTimeStart);
 router.post('/breakTimeFinish',control.driverId, bussId.bussId, operationS.breakTimeFinish);
 router.post('/exchange', operationS.exchange);
+router.post('/upload', operationS.upload);
 
 
 module.exports=router; //dışarı dosya alıp vermek için lazım
