@@ -42,7 +42,7 @@ const workingStartTime = async function(req,res){
 const workingFinishTime = async function(req,res){
     try {
         let Id = req.body.driverId;
-        var day = time.days(time.timestamp()); //time.days(time.timestamp());
+        var day = time.days(time.timestamp()); 
         var asdf = await new database.CRUD('driverfollow','time').find({'driverId':Id , 'dayss': day});
         if( asdf[0].breakStartt == 0 || asdf[0].startt == 0  || asdf[0].breakFinishh == 0){
             return res.status(403).json({Message: 'Didn\'t add'});
@@ -60,7 +60,7 @@ const workingFinishTime = async function(req,res){
 const workingTime = async function(req,res){
     try {
         let Id = req.body.driverId;
-        var day = '2023-08-24'; //time.days(time.timestamp());
+        var day = time.days(time.timestamp());
         var asdf = await new database.CRUD('driverfollow','time').find({'driverId':Id, 'dayss': day});
     
         if(asdf[0].startt == 0 || asdf[0].finishh == 0){
@@ -90,7 +90,7 @@ const workingTime = async function(req,res){
 const workingMoney = async function(req,res){
     try {
         let Id = req.body.driverId;
-        var day = time.days(time.timestamp()); //time.days(time.timestamp());
+        var day = time.days(time.timestamp()); 
         var asdf = await new database.CRUD('driverfollow','time').find({'driverId':Id, 'dayss': day});
         //time.days(asdf[0].startt)
         if(asdf[0].startt == 0 || asdf[0].finishh == 0){
@@ -115,13 +115,11 @@ const workingMoney = async function(req,res){
 const breakTimeStart = async function(req,res){
     try {
         let Id = req.body.driverId;
-        var day = time.days(time.timestamp()); //time.days(time.timestamp());
+        var day = time.days(time.timestamp());
         var asdf = await new database.CRUD('driverfollow','time').find({'driverId':Id,'dayss': day});
-        //time.days(asdf[0].startt)
         if(asdf[0].startt == 0 || asdf[0].breakStart != 0){
             return res.status(403).json({Message: 'Start Didn\'t add'});
         }
-
         var start = time.timestamp();
         new database.CRUD('driverfollow','time').update(
             {driverId: req.body.driverId, dayss: day},
@@ -136,9 +134,8 @@ const breakTimeStart = async function(req,res){
 const breakTimeFinish = async function(req,res){
     try {
         let Id = req.body.driverId;
-        var day = time.days(time.timestamp()); //time.days(time.timestamp());
+        var day = time.days(time.timestamp());
         var asdf = await new database.CRUD('driverfollow','time').find({'driverId':Id,'dayss': day});
-        //time.days(asdf[0].startt)
         if(asdf[0].startt == 0 || asdf[0].breakStartt == 0 ){
             return res.json('Start Didn\'t add');
         }
@@ -211,7 +208,7 @@ const exchange = async function(req,res){
         });
 };*/
 
-const upload = async function(req,res){
+/*const upload = async function(req,res){
     const image = req.files;
     const uploadPath = __dirname + '/'+ image.car.name;
     //__dirname = bulunduğun klasör
@@ -224,7 +221,8 @@ const upload = async function(req,res){
     if(image){
         return res.json('ok');
     }
-};
+};*/
+
 module.exports ={
     workingStartTime,
     workingFinishTime,
@@ -232,6 +230,5 @@ module.exports ={
     workingMoney,
     breakTimeStart,
     breakTimeFinish,
-    exchange,
-    upload
+    exchange
 };
