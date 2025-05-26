@@ -1,4 +1,4 @@
-const database = require('../models/database');
+/*const database = require('../models/database');
 
 function driverId(req,res,next){
     let Id = req.body.driverId;
@@ -13,4 +13,4 @@ function driverId(req,res,next){
 
 module.exports = {
     driverId
-};
+};*/

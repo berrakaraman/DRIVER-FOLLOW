@@ -1,5 +1,21 @@
 //yazım kuralları
 module.exports = {
+  env: {
+    node: true,
+    commonjs: true,
+  },
+  extends: "eslint:recommended",
+  parserOptions: {
+    ecmaVersion: 12,
+  },
+  rules: {
+    indent: "off",
+    "linebreak-style": "off",
+    quotes: "off",
+    semi: "off",
+  },
+};
+/*module.exports = {
     'env': {
         'node': true,
         'commonjs': true
@@ -26,4 +42,4 @@ module.exports = {
             'always'
         ]
     }
-};
+};*/

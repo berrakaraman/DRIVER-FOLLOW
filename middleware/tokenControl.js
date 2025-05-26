@@ -1,22 +1,24 @@
-var jwt = require('jsonwebtoken');
+// middleware/tokenControl.js
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET || "asdf";
 
 function tokenControl(req, res, next) {
-    var useToken = req.body.token;
-    if(useToken == null && useToken.length < 2 ){
-        return res.json(false);
-    }
-    else{
-        jwt.verify(useToken, 'asdf', function(err, decoded) { // asdf ayni olmalı 
-            if(err){ //err verirse yapılacaklar 
-                return res.json('jwt expired'); // tokenin süresi dolduğunu söylüyor
-            }
-            return decoded;
-        });
-        return next();
+  const authHeader = req.headers.authorization;
+  if (!authHeader)
+    return res.status(401).json({ message: "Token bulunamadı." });
 
-    }
+  const [scheme, token] = authHeader.split(" ");
+  if (scheme !== "Bearer" || !token) {
+    return res.status(401).json({ message: "Token formatı hatalı." });
+  }
+
+  jwt.verify(token, SECRET, (err, decoded) => {
+    if (err)
+      return res
+        .status(401)
+        .json({ message: "Geçersiz veya süresi dolmuş token." });
+    req.user = decoded;
+    next();
+  });
 }
-
-module.exports = {
-    tokenControl
-};
+module.exports = { tokenControl };

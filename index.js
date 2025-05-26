@@ -1,18 +1,34 @@
-const express = require('express');
+//index.js
+const express = require("express");
+//const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const database = require("./models/database");
+dotenv.config();
 const app = express();
+// CORS
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json({limit : 100000000})); //gelen istekleri Json olarak ayırır
-app.use(express.urlencoded({ extended: false})); // şifreleme yapar
-
-const fileUpload = require('express-fileupload');
-app.use(fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-}));
-
-const database = require('./models/database'); //database bağlantısı 
-database.connector();
-
-const router = require('./routes'); //router bağlantısı
-app.use('/api',router);
-
-app.listen(5005);//port 
+database
+  .connector()
+  .then(() => {
+    console.log("MongoDB bağlantısı başarılı.");
+    app.listen(5001, () => {
+      console.log("Server started at port 5001");
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB bağlantı hatası:", err);
+  });
+// Routes
+const routes = require("./routes/indexR");
+app.use("/api", routes);

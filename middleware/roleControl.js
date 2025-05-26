@@ -1,18 +1,17 @@
-var jwt = require('jsonwebtoken');
+// middleware/roleControl.js
+function roleControl(requiredRole) {
+  return (req, res, next) => {
+    console.log("User:", req.user);
 
-function roleControl(req,res,next){
-    var useToken = req.body.token;
-    let user = jwt.verify(useToken, 'asdf', function(err, decoded){
-        return decoded;
-    });
-    if(user.role != 'admin'){
-        return res.json('yetkiniz yok');
+    if (!req.user || req.user.role !== requiredRole) {
+      return res
+        .status(403)
+        .json({ message: "Yetkisiz erişim: sadece " + requiredRole });
     }
-    else{
-        return next();
-    }
+    next();
+  };
 }
 
 module.exports = {
-    roleControl
+  roleControl,
 };
